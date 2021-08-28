@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'typeface-roboto';
 import './index.css';
+import Login from './screens/login/Login';
 
+//rendered Login 
 ReactDOM.render(
-    <span>
-        Image Viewer
-    </span>, 
+    <Login />,  
     document.getElementById('root')
 );
