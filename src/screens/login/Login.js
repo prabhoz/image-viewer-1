@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Header from '../../common/header/Header';
+import Home from '../../screens/home/Home';
 import './Login.css';
 
 //added header component
@@ -22,6 +23,9 @@ class Login extends Component {
             reqUsername: "dispNone",
             reqPassword: "dispNone",
             error: "dispNone",
+            loginSucess: false,
+            loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
+
         }
     }
         //username change handler
@@ -39,7 +43,8 @@ class Login extends Component {
         let correctUsername = "Prabh";
         let correctPassword ="Password";
         if(this.state.username === correctUsername && this.state.password === correctPassword){
-            ReactDOM.render(<div>Home Page</div>, document.getElementById('root'));
+            sessionStorage.setItem('access_token', '123456');
+            ReactDOM.render(<Home/>, document.getElementById('root'));
         }
         else{
             if(this.state.username !== "" && this.state.password !== "")
