@@ -23,9 +23,6 @@ class Login extends Component {
             reqUsername: "dispNone",
             reqPassword: "dispNone",
             error: "dispNone",
-            loginSucess: false,
-            loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
-
         }
     }
         //username change handler
@@ -43,8 +40,7 @@ class Login extends Component {
         let correctUsername = "Prabh";
         let correctPassword ="Password";
         if(this.state.username === correctUsername && this.state.password === correctPassword){
-            sessionStorage.setItem('access_token', '123456');
-            ReactDOM.render(<Home/>, document.getElementById('root'));
+            ReactDOM.render(<div>Home Page</div>, document.getElementById('root'));
         }
         else{
             if(this.state.username !== "" && this.state.password !== "")
