@@ -1,5 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import './Login.css';
+import Header from '../../common/header/Header';
+import Home from '../../screens/home/Home';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -8,80 +11,117 @@ import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Header from '../../common/header/Header';
-import Home from '../../screens/home/Home';
-import './Login.css';
+import { Redirect } from 'react-router-dom'
 
-//added header component
+
+
 class Login extends Component {
-    constructor(){
+    constructor() {
         super();
-        //added state
         this.state = {
-            username:"",
-            password:"",
+            username: "",
+            password: "",
             reqUsername: "dispNone",
             reqPassword: "dispNone",
             error: "dispNone",
+            loginSucess: false,
+            loggedIn: sessionStorage.getItem("access_token") == null ? false : true,
         }
     }
-        //username change handler
-    inputUsernameChangeHandler =(e) => {
-        this.setState({username: e.target.value});
+
+
+    inputUsernameChangeHandler = (e) => {
+        this.setState({ username: e.target.value });
     }
-        //password change handler
+
+
     inputPasswordChangeHandler = (e) => {
-        this.setState({ password: e.target.value});
+        this.setState({ password: e.target.value });
     }
-    //login button handler added
+
     loginButtonHandler = () => {
-        this.state.username === "" ? this.setState({reqUsername: "dispBlock"}): this.setState({reqUsername:"dispNone"});
-        this.state.password === "" ? this.setState({reqPassword: "dispBlock"}):this.setState({reqPassword:"dispNone"});
-        let correctUsername = "Prabh";
-        let correctPassword ="Password";
-        if(this.state.username === correctUsername && this.state.password === correctPassword){
-            ReactDOM.render(<div>Home Page</div>, document.getElementById('root'));
+        this.state.username === "" ? this.setState({ reqUsername: "dispBlock" }) : this.setState({ reqUsername: "dispNone" });
+        this.state.password === "" ? this.setState({ reqPassword: "dispBlock" }) : this.setState({ reqPassword: "dispNone" });
+        let usernameCorrect = "Prabhusername";
+        let passwordCorrect = "PrabhPassword";
+        if (this.state.username === usernameCorrect && this.state.password === passwordCorrect) {
+            sessionStorage.setItem('access_token', '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784');
+            console.log(sessionStorage.getItem('access_token'));
+            ReactDOM.render( < Home baseUrl = { this.props.baseUrl }
+                />, document.getElementById('root'));
+            }
+            else {
+                if (this.state.username !== "" && this.state.password !== "")
+                    this.setState({ error: "dispBlock" });
+            }
         }
-        else{
-            if(this.state.username !== "" && this.state.password !== "")
-            this.setState({error: "dispBlock"});
+
+        render() {
+            return ( <
+                div >
+
+                {
+                    this.state.loggedIn === true ?
+                    <
+                    Redirect to = "/home" / >
+                    :
+                        <
+                        div >
+                        <
+                        Header baseUrl = { this.props.baseUrl }
+                    /> <
+                    Card className = "cardStyle" >
+                    <
+                    CardContent >
+                    <
+                    Typography variant = "h4" >
+                    LOGIN <
+                    /Typography> <br / >
+                    <
+                    FormControl required className = "formControl" >
+                    <
+                    InputLabel htmlFor = "username" > Username < /InputLabel> <
+                    Input id = "username"
+                    type = "text"
+                    username = { this.state.username }
+                    onChange = { this.inputUsernameChangeHandler }
+                    value = { this.state.username }
+                    /> <
+                    FormHelperText className = { this.state.reqUsername } > < span className = "red" > required < /span></FormHelperText >
+                    <
+                    /FormControl><br / > < br / >
+                    <
+                    FormControl required className = "formControl" >
+                    <
+                    InputLabel htmlFor = "password" > Password < /InputLabel> <
+                    Input id = "password"
+                    type = "password"
+                    password = { this.state.password }
+                    onChange = { this.inputPasswordChangeHandler }
+                    /> <
+                    FormHelperText className = { this.state.reqPassword } > < span className = "red" > required < /span></FormHelperText >
+                    <
+                    /FormControl> <br / > < br / >
+                    <
+                    FormControl required className = "formControl" >
+                    <
+                    FormHelperText className = { this.state.error } > < span className = "red" > Incorrect username and / or password < /span></FormHelperText >
+                    <
+                    /FormControl><br / > < br / >
+                    <
+                    Button variant = "contained"
+                    onClick = { this.loginButtonHandler }
+                    color = "primary" >
+                    Login <
+                    /Button> <
+                    /CardContent> <
+                    /Card> <
+                    /div>
+                } <
+                /div>
+
+            )
         }
-
-
     }
-    render(){
-        return(
-            <div>
-                <Header/>
-                <Card className="cardStyle">
-                    <CardContent>
-                        <Typography variant="h4">
-                               LOGIN
-                        </Typography> <br/>
-                        <FormControl required className="formControl"> 
-                            <InputLabel htmlFor="username">Username</InputLabel>
-                            <Input id="username" type="text" username={this.state.username}
-                            onChange={this.inputUsernameChangeHandler}/>
-                        <FormHelperText className={this.state.reqUsername}><span className="red">required</span></FormHelperText>
-                         </FormControl><br/><br/>
-                        <FormControl required className="formControl">
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                             <Input id="password" type="password" password={this.state.password}
-                             onChange={this.inputPasswordChangeHandler}/>
-                        <FormHelperText className={this.state.reqPassword}><span className="red">required</span></FormHelperText>
-                        </FormControl> <br/><br/>
-                         <FormControl required className="formControl">
-                         <FormHelperText className={this.state.error}><span className="red">Incorrect username and/or password</span></FormHelperText>
-                         </FormControl><br/><br/>
-                            <Button variant="contained" onClick={this.loginButtonHandler} color="primary">
-                                Login
-                            </Button>
-                    </CardContent>
-                </Card>
-            </div>
-            
-        )
-    }
-}
 
-export default Login;
+    export default Login;
